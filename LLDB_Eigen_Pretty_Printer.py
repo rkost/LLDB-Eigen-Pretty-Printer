@@ -4,16 +4,16 @@ import os
 from functools import partial
 
 def __lldb_init_module (debugger, dict):
-    debugger.HandleCommand("type summary add -x \"^Eigen::Matrix<.*?>$\" -F\
+    debugger.HandleCommand("type summary add -x \"Eigen::Matrix<.*?>\" -F\
                            LLDB_Eigen_Pretty_Printer.eigen_matrix_print -p -r\
                           -w Eigen")
-    debugger.HandleCommand("type summary add -x \"^Eigen::Array<.*?>$\" -F\
+    debugger.HandleCommand("type summary add -x \"Eigen::Array<.*?>\" -F\
                            LLDB_Eigen_Pretty_Printer.eigen_array_print -p -r\
                           -w Eigen")
-    debugger.HandleCommand("type summary add -x \"^Eigen::Quaternion<.*?>$\" \
+    debugger.HandleCommand("type summary add -x \"Eigen::Quaternion<.*?>\" \
                            -F LLDB_Eigen_Pretty_Printer.eigen_quaternion_print\
                            -p -r -w Eigen")
-    debugger.HandleCommand("type summary add -x \"^Eigen::SparseMatrix<.*?>$\"\
+    debugger.HandleCommand("type summary add -x \"Eigen::SparseMatrix<.*?>\"\
                            -F\
                            LLDB_Eigen_Pretty_Printer.eigen_sparsematrix_print\
                            -p -r -w Eigen")
@@ -123,7 +123,7 @@ class Matrix(Printer):
         for i in range(0, self.rows * self.cols):
             padding = max(padding, len(str(self.get(i))))
 
-        output = "rows: %d, cols: %d\n[" % (self.rows, self.cols)
+        output = "rows: %d, cols: %d - [" % (self.rows, self.cols)
         if (self.options):
             for i in range(0, self.rows):
                 if i!=0:
@@ -137,7 +137,7 @@ class Matrix(Printer):
                         output += val.rjust(padding+1, ' ')
 
                 if i!=self.rows-1:
-                    output += ";\n"
+                    output += ";"
         else:
             for i in range(0, self.rows):
                 if i!=0:
@@ -151,9 +151,9 @@ class Matrix(Printer):
                         output += val.rjust(padding+1, ' ')
 
                 if i!=self.rows-1:
-                    output += ";\n"
+                    output += ";"
 
-        output+=" ]\n"
+        output+=" ]"
 
         return output
 
@@ -226,7 +226,7 @@ class SparseMatrix(Printer):
         for i in range(0, self.size):
             padding = max(padding, len(str(self.get(i))))
 
-        output = "rows: %d, cols: %d\n{ " % (self.rows, self.cols)
+        output = "rows: %d, cols: %d - { " % (self.rows, self.cols)
 
         if (self.rowMajor):
             for i in range(0, self.rows):
@@ -265,7 +265,7 @@ class SparseMatrix(Printer):
                 output += "[%d, %d] =" % (rows[index], cols[index])
                 output += vals[index].rjust(padding+1, ' ') + ", "
 
-        output += "\b\b }\n"
+        output += "\b\b }"
 
         return output
 
@@ -307,7 +307,7 @@ class Quaternion(Printer):
         output ="{ [x] = " + self.get(0) + ", " + \
                   "[y] = " + self.get(1) + ", " + \
                   "[z] = " + self.get(2) + ", " + \
-                  "[w] = " + self.get(3) + " }\n"
+                  "[w] = " + self.get(3) + " }"
 
         return output
 
