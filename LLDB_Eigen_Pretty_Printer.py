@@ -4,16 +4,16 @@ import os
 from functools import partial
 
 def __lldb_init_module (debugger, dict):
-    debugger.HandleCommand("type summary add -x \"Eigen::Matrix<.*?>\" -F\
+    debugger.HandleCommand("type summary add -x \"Eigen::Matrix\" -F\
                            LLDB_Eigen_Pretty_Printer.eigen_matrix_print -p -r\
                           -w Eigen")
-    debugger.HandleCommand("type summary add -x \"Eigen::Array<.*?>\" -F\
+    debugger.HandleCommand("type summary add -x \"Eigen::Array\" -F\
                            LLDB_Eigen_Pretty_Printer.eigen_array_print -p -r\
                           -w Eigen")
-    debugger.HandleCommand("type summary add -x \"Eigen::Quaternion<.*?>\" \
+    debugger.HandleCommand("type summary add -x \"Eigen::Quaternion\" \
                            -F LLDB_Eigen_Pretty_Printer.eigen_quaternion_print\
                            -p -r -w Eigen")
-    debugger.HandleCommand("type summary add -x \"Eigen::SparseMatrix<.*?>\"\
+    debugger.HandleCommand("type summary add -x \"Eigen::SparseMatrix\"\
                            -F\
                            LLDB_Eigen_Pretty_Printer.eigen_sparsematrix_print\
                            -p -r -w Eigen")
@@ -93,7 +93,7 @@ class Matrix(Printer):
 
             self.options = 0
             if len(template_params) > 3:
-                self.options = int(template_params[3]);
+                self.options = int(template_params[3])
 
             self.rowMajor = (int(self.options) & 0x1)
             self.innerType = template_params[0]
